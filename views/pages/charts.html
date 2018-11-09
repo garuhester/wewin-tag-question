@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>标签筛选后台统计-图表</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="/js/echarts.common.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="height:500px"></div>
+    <script>
+        getUserList();
+        function getUserList() {
+            $.ajax({
+                method: 'post',
+                url: '/getUserList',
+                success: function (data) {
+                    var html = "";
+                    var allData = [];
+                    var numData = [];
+                    var num = 0;
+                    for (var j = 0; j < data.usersData.length; j++) {
+                        num = 0;
+                        for (var k = 0; k < data.allUser.length; k++) {
+                            if (data.allUser[k].result == data.usersData[j]) {
+                                num++;
+                            }
+                        }
+                        numData.push(num);
+                    }
+                    allData[0] = data.usersData;
+                    allData[1] = numData;
+                    myChart.setOption({ //加载数据图表
+                        xAxis: {
+                            data: allData[0],
+                        },
+                        series: [{
+                            data: allData[1],
+                        }]
+                    });
+                }
+            });
+        }
+        var myChart = echarts.init(document.getElementById('main'));
+        var xArr = [];
+        var yArr = [];
+        var seriesLabel = {
+            show: true, //是否展示
+            position: 'top',
+            textStyle: {
+                fontWeight: 'bolder',
+                fontSize: '12',
+                fontFamily: '微软雅黑',
+                color: "#646464"
+            }
+        };
+        var option = {
+            title: {
+                text: "标签筛选后台统计-图表"
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var relVal = params[0].name;
+                    for (var i = 0, l = params.length; i < l; i++) {
+                        relVal += '<br/>' + `<div style="background:${params[i].color};height:10px;width:10px;border-radius:50%;display:inline-block"></div> ` + ' : ' + params[i].value + "人";
+                    }
+                    return relVal;
+                }
+            },
+            xAxis: {
+                data: xArr
+            },
+            yAxis: {},
+            series: [
+                {
+                    type: "bar",
+                    data: [],
+                    itemStyle: {
+                        color: "#448AFF"
+                    },
+                    label: seriesLabel
+                }
+            ],
+            dataZoom: [
+                {
+                    show: true,
+                    realtime: true,
+                    start: 0,
+                    end: 50
+                },
+                {
+                    type: 'inside',
+                    realtime: true,
+                    start: 0,
+                    end: 50
+                }
+            ]
+        }
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>

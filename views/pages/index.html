@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <title>打印机标签问题筛选展示</title>
+</head>
+
+<body>
+    <div class="main noselect">
+        <div class="questions">
+            <div id="q1" class="question q1 active">
+                <div class="img">
+                    <img src="/img/wewin.png" alt="">
+                </div>
+                <div class="title wordbreak" style="margin-top: 15px">1.打印机型号是什么？</div>
+                <div class="answers bw">
+                    <div class="answer a1 q1">
+                        <div class="left">A.</div>
+                        <div class="middle">
+                            <img style="width:50%;float:left" src="/img/p30.jpg" alt="">
+                            <img style="width:50%;" src="/img/c10.jpg" alt="">
+                        </div>
+                        <div class="right rv-center p30">P30/C10系列</div>
+                    </div>
+                    <div class="answer a2 q1">
+                        <div class="left">B.</div>
+                        <div class="middle">
+                            <img style="width:50%;float:left" src="/img/p50.png" alt="">
+                            <img style="width:50%;" src="/img/h50.jpg" alt="">
+                        </div>
+                        <div class="right rv-center p50">P50/P1200/M20T/C20/V200A/H50系列</div>
+                    </div>
+                    <div class="answer a3 q1">
+                        <div class="left">C.</div>
+                        <div class="middle">
+                            <img src="/img/taishi.jpg" alt="">
+                        </div>
+                        <div class="right rv-center taishi">台式打印机系列</div>
+                    </div>
+                    <div class="answer a4 q1">
+                        <div class="left">D.</div>
+                        <div class="middle">
+                            <img src="/img/zhengka.jpg" alt="">
+                        </div>
+                        <div class="right rv-center zhengka">证卡打印机系列</div>
+                    </div>
+                </div>
+                <div class="tips bw" style="text-align: center">
+                    <div>若您均未使用以上产品，欢迎致电：023-63075555</div>
+                </div>
+            </div>
+        </div>
+        <div class="result">
+            <div class="backlast">返回上一题</div>
+            <div class="title">标签种类</div>
+            <div class="chooser"></div>
+            <div class="tags" id="images"></div>
+            <div class="tips bw">
+                <div>注意：*RD=红色、YL=黄色、BL=蓝色、GR=绿色、SL=银色。 </div>
+                <div>确认型号过后或者有任何疑问可以直接联系对应省份的助理哟：023-63075555。</div>
+                <div>没有图片的型号不是常用型号，可能会没有库存。</div>
+            </div>
+        </div>
+        <div class="restart" onclick="restart()">重新选择</div>
+        <div class="upimg">
+            <div class="title"></div>
+            <img src="/img/VQS-02FBL.png" alt="">
+        </div>
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

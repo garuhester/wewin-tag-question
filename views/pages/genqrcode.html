@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>标签筛选动态二维码生成</title>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        #ewm {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #title {
+            padding: 10px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #title a {
+            text-decoration: none;
+        }
+
+        .time {
+            font-size: 1.3rem;
+            margin-top: 20px;
+        }
+
+        .noselect {
+            -moz-user-select: none;
+            /*火狐*/
+            -webkit-user-select: none;
+            /*webkit浏览器*/
+            -ms-user-select: none;
+            /*IE10*/
+            -khtml-user-select: none;
+            /*早期浏览器*/
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title" class="noselect">
+        <a href="" target="_blank"></a>
+        <div class="time"></div>
+    </div>
+    <div id="ewm"></div>
+    <script>
+        window.onload = function () {
+            createNewQrcode();
+        }
+        function createNewQrcode() {
+            $.ajax({
+                method: 'post',
+                url: '/genQrcode',
+                success: function (data) {
+                    setTimeout(function () {
+                        var inter = setInterval(function () {
+                            $.ajax({
+                                method: 'post',
+                                url: '/getNumber',
+                                success: function (data) {
+                                    if (data.result == 180) {
+                                        $(".time").text("请刷新页面");
+                                        clearInterval(inter);
+                                    } else {
+                                        $(".time").text("二维码 " + data.result + " 秒后失效");
+                                    }
+                                }
+                            });
+                        }, 500);
+                    }, 1000);
+                    var url = window.location.origin + "/index/";
+                    $("#title a").attr("href", url + data.result);
+                    $("#title a").text(url + data.result);
+                    jQuery('#ewm').qrcode({
+                        render: "canvas",
+                        width: 300,
+                        height: 300,
+                        text: url + data.result
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
