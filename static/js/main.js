@@ -2,6 +2,7 @@ var result = "", nowq = 1, maxq = 0, tagsBox, chooseStr = "", begin = "";
 var answerWords = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"];
 var resultData = [];
 var connect = "->";
+var shake = true;
 
 var allInfo = [
     {
@@ -262,6 +263,9 @@ window.onload = function () {
     initClick();
     getXLS();
     tagsBox = document.querySelector(".tags");
+    setTimeout(function () {
+        $(".appstart").addClass("disable");
+    }, 0);
 }
 
 function initClick() {
@@ -274,6 +278,31 @@ function initClick() {
         $(".upimg .title").text("");
     });
 
+    //标签选型
+    $(".startmenu .b3").click(function () {
+        if (shake) {
+            shake = false;
+            setTimeout(function () {
+                $(".main").addClass("active");
+                $(".startmenu").addClass("disactive");
+                shake = true;
+            }, 200);
+        }
+    });
+
+    //返回主菜单
+    $(".backstartmenu").click(function () {
+        var _this = this;
+        if (shake) {
+            shake = false;
+            setTimeout(function () {
+                $(".main").removeClass("active");
+                $(".startmenu").removeClass("disactive");
+                shake = true;
+            }, 200);
+        }
+    });
+
     // $(".middle img").click(function () {
     //     var src = $(this).attr("src");
     //     $(".upimg").addClass("active");
@@ -283,132 +312,144 @@ function initClick() {
 
 function registAnswerClick() {
     $(".answer").click(function () {
-        var isOver = true;
-        var className = $(this).attr("class");
-        var choose = $(this).children(".left").text().replace(".", "");
-        if (nowq == 1) {
-            begin = $(this).children(".right").attr("class").split(" ")[2];
-        }
-        nowq = className.split(" ")[2].replace("q", "");
-        var allQues = $(".questions");
+        var _this = this;
+        if (shake) {
+            shake = false;
 
-        if (nowq != 1) {
+            //#region click
+            var isOver = true;
+            var className = $(this).attr("class");
+            var choose = $(this).children(".left").text().replace(".", "");
+            if (nowq == 1) {
+                begin = $(this).children(".right").attr("class").split(" ")[2];
+            }
+            nowq = className.split(" ")[2].replace("q", "");
+            var allQues = $(".questions");
+
+            if (nowq != 1) {
+                type = $(this).children(".right").text();
+            } else {
+                type = $(this).children(".right").attr("class").split(" ")[2];
+            }
             type = $(this).children(".right").text();
-        } else {
-            type = $(this).children(".right").attr("class").split(" ")[2];
-        }
-        type = $(this).children(".right").text();
 
-        if (chooseStr == "") {
-            chooseStr += type;
-        } else {
-            chooseStr += connect + type;
-        }
+            if (chooseStr == "") {
+                chooseStr += type;
+            } else {
+                chooseStr += connect + type;
+            }
 
-        nowq++;
-        a: for (var i = 0; i < allInfo.length; i++) {
-            if (allInfo[i].type == begin) {
-                var ques = allInfo[i].ques;
-                if (nowq == 2) {
-                    maxq = ques.length + 1;
-                }
-                b: for (var j = 0; j < ques.length; j++) {
-                    var quesTypes = ques[j][0];
-                    c: for (var z = 0; z < quesTypes.length; z++) {
-                        if (chooseStr == quesTypes[z]) {
-                            isOver = false;
-                            var newQues = `
+            nowq++;
+            a: for (var i = 0; i < allInfo.length; i++) {
+                if (allInfo[i].type == begin) {
+                    var ques = allInfo[i].ques;
+                    if (nowq == 2) {
+                        maxq = ques.length + 1;
+                    }
+                    b: for (var j = 0; j < ques.length; j++) {
+                        var quesTypes = ques[j][0];
+                        c: for (var z = 0; z < quesTypes.length; z++) {
+                            if (chooseStr == quesTypes[z]) {
+                                isOver = false;
+                                var newQues = `
             <div id="q${nowq}" class="question q${nowq}">
                 <div class="backlast">返回上一题</div>
                 <div class="title wordbreak">${nowq}.${ques[j][1]}</div>
                 <div class="answers bw">
                             `;
-                            for (var q = 2; q < ques[j].length; q++) {
-                                newQues += `
+                                for (var q = 2; q < ques[j].length; q++) {
+                                    newQues += `
                     <div class="answer a${q - 1} q${nowq}">
                         <div class="left">${answerWords[q - 2]}.</div>
                                 `;
-                                if (ques[j][q] == "平面标签" || ques[j][q] == "连续标签" || ques[j][q] == "线缆标签" || ques[j][q] == "软质挂牌" || ques[j][q] == "机架标签" || ques[j][q] == "标准卡" || ques[j][q] == "多联卡") {
-                                    newQues += `
+                                    if (ques[j][q] == "平面标签" || ques[j][q] == "连续标签" || ques[j][q] == "线缆标签" || ques[j][q] == "软质挂牌" || ques[j][q] == "机架标签" || ques[j][q] == "标准卡" || ques[j][q] == "多联卡") {
+                                        newQues += `
                         <div class="middle">
                             <img src="/img/${ques[j][q]}.png" alt="">
                         </div>
                                     `;
-                                    newQues += `
+                                        newQues += `
                         <div class="right rv-center">${ques[j][q]}</div>
                     </div>
                                     `;
-                                } else {
-                                    newQues += `
+                                    } else {
+                                        newQues += `
                         <!-- <div class="middle">
                             <img src="/img/5s.png" alt="">
                         </div> -->
                                     `;
-                                    newQues += `
+                                        newQues += `
                         <div class="right rv-center" style="width:90%;">${ques[j][q]}</div>
                     </div>
                                     `;
+                                    }
                                 }
-                            }
 
-                            newQues += `
+                                newQues += `
                 </div>
                             `;
-                            if (ques[j][1].indexOf("标签的出纸宽度是多少") != -1) {
-                                newQues += `
+                                if (ques[j][1].indexOf("标签的出纸宽度是多少") != -1) {
+                                    newQues += `
                 <div class="tips bw" style="text-align: center">
                     <div>出纸宽度为：打印时与打印机出纸口平行的那一条边</div>
                 </div>
                                 `;
-                            }
+                                }
 
-                            newQues += `
+                                newQues += `
             </div>
                             `;
-                            allQues.append(newQues);
-                            break a;
+                                allQues.append(newQues);
+                                break a;
+                            }
                         }
                     }
                 }
             }
+
+            $('.answer').unbind("click");
+            result += choose;
+            //#endregion
+
+            setTimeout(function () {
+                initClick();
+                backLast();
+                $('html,body').animate({ scrollTop: '0px' }, 100);
+                $(_this).parent().parent().removeClass("active");
+                if (nowq == maxq + 1 || isOver) {
+                    gotoResult();
+                } else {
+                    $("#q" + nowq).addClass("active");
+                }
+
+                console.log("chooseStr:" + chooseStr);
+                console.log("result:" + result);
+                shake = true;
+            }, 200);
         }
-
-        $('.answer').unbind("click");
-        result += choose;
-        setTimeout(() => {
-            initClick();
-            backLast();
-            $('html,body').animate({ scrollTop: '0px' }, 100);
-            $(this).parent().parent().removeClass("active");
-            if (nowq == maxq + 1 || isOver) {
-                gotoResult();
-            } else {
-                $("#q" + nowq).addClass("active");
-            }
-
-            console.log("chooseStr:" + chooseStr);
-            console.log("result:" + result);
-        }, 200);
-
     });
 }
 
 function restart() {
-    setTimeout(() => {
-        result = "";
-        chooseStr = "";
-        begin = "";
-        nowq = 1;
-        tagsBox.innerHTML = "";
-        for (var i = 2; i < 10; i++) {
-            $("#q" + i).remove();
-        }
-        $(".result").removeClass("active");
-        $("#q1").addClass("active");
-        $('html,body').animate({ scrollTop: '0px' }, 100);
-        console.clear();
-        // window.location.reload();
-    }, 200);
+    if (shake) {
+        shake = false;
+        setTimeout(function () {
+            result = "";
+            chooseStr = "";
+            begin = "";
+            nowq = 1;
+            tagsBox.innerHTML = "";
+            for (var i = 2; i < 10; i++) {
+                $("#q" + i).remove();
+            }
+            $(".result").removeClass("active");
+            $("#q1").addClass("active");
+            $('html,body').animate({ scrollTop: '0px' }, 100);
+            console.clear();
+            shake = true;
+            // window.location.reload();
+        }, 200);
+    }
 }
 
 function getXLS() {
@@ -467,12 +508,12 @@ function addResult(allDatas, tags) {
     for (var i = 0; i < allDatas.length; i++) {
         if (allDatas[0].length != 1) {
             if (allDatas[i][1].trim() == "no") {
-                tagsBox.innerHTML += `<div class='tag'><div class='txt' style='width:90%;'>${allDatas[i][0]}</div></div>`;
+                tagsBox.innerHTML += `<div class='tag'><div class='txt noimg'>${allDatas[i][0]}</div></div>`;
             } else {
-                tagsBox.innerHTML += `<div class='tag'><div class='txt'>${allDatas[i][0]}</div><img src='/img/${allDatas[i][1]}' alt='' onerror='nofind(this);'> </div>`;
+                tagsBox.innerHTML += `<div class='tag'><div class='txt'>${allDatas[i][0]}</div><img src='/img/${allDatas[i][1]}' alt='' onerror='nofind(this);'></div>`;
             }
         } else {
-            tagsBox.innerHTML += `<div class='tag'><div class='txt' style='width:90%;>${allDatas[i][0]}</div></div>`;
+            tagsBox.innerHTML += `<div class='tag'><div class='txt noimg'>${allDatas[i][0]}</div></div>`;
         }
     }
     $(".chooser").text("(" + chooseStr + ")");
@@ -489,7 +530,7 @@ function addResult(allDatas, tags) {
 }
 
 function nofind(obj) {
-    $(obj).parent().children(".txt").css({ width: "90%" });
+    $(obj).parent().children(".txt").addClass("noimg");
     $(obj).remove();
 }
 
@@ -513,18 +554,23 @@ function statistic(tags) {
 function backLast() {
     $('.backlast').unbind("click");
     $(".backlast").click(function () {
-        setTimeout(() => {
-            nowq--;
-            if ($(this).parent().attr("class").indexOf("result") == -1) {
-                $(this).parent().remove();
-            } else {
-                $(this).parent().removeClass("active");
-                tagsBox.innerHTML = "";
-            }
-            $("#q" + nowq).addClass("active");
-            result = popResult(result);
-            chooseStr = popChooseStr(chooseStr);
-        }, 200);
+        var _this = this;
+        if (shake) {
+            shake = false;
+            setTimeout(function () {
+                nowq--;
+                if ($(_this).parent().attr("class").indexOf("result") == -1) {
+                    $(_this).parent().remove();
+                } else {
+                    $(_this).parent().removeClass("active");
+                    tagsBox.innerHTML = "";
+                }
+                $("#q" + nowq).addClass("active");
+                result = popResult(result);
+                chooseStr = popChooseStr(chooseStr);
+                shake = true;
+            }, 200);
+        }
     });
 }
 

@@ -53,6 +53,7 @@ html {
 
 .main {
     min-height: 100%;
+    display: none;
 }
 
 .question {
@@ -190,6 +191,7 @@ html {
     top: 50%;
     transform: translate(0, -50%);
     width: calc(100% - 100px);
+    transition: all 0.3s;
 }
 
 .result .tags .tag img {
@@ -203,6 +205,7 @@ html {
     transform: translate(0, -50%);
     object-fit: contain;
     border: 1px dashed #ddd;
+    transition: all 0.3s;
 }
 
 .result .tags .tag img:active {
@@ -210,7 +213,8 @@ html {
 }
 
 .restart,
-.backlast {
+.backlast,
+.backstartmenu {
     position: fixed;
     padding: 10px;
     font-size: 1.1rem;
@@ -228,7 +232,8 @@ html {
     border-radius: 30px 30px 0 0;
 }
 
-.backlast {
+.backlast,
+.backstartmenu {
     top: 0px;
     left: 0;
     border-bottom: 1px solid rgb(220, 220, 220);
@@ -237,7 +242,8 @@ html {
 }
 
 .restart:active,
-.backlast:active {
+.backlast:active,
+.backstartmenu:active {
     background: rgb(243, 243, 243);
 }
 
@@ -298,4 +304,173 @@ html {
 .bw {
     word-break: break-all;
     text-align: justify;
+}
+
+@media (min-width:700px) {
+    .result .tags .tag .txt {
+        width: 45%;
+        text-align: right;
+    }
+    .result .tags .tag img {
+        right: 35%;
+    }
+}
+
+.noimg {
+    width: 90%;
+}
+
+.appstart {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background: #fff;
+    z-index: 1000;
+    opacity: 1;
+    transition: all 0.3s;
+    background: rgb(248, 248, 248);
+}
+
+.appmain {
+    position: absolute;
+    top: 25%;
+    text-align: center;
+    width: 100%;
+    opacity: 1;
+    animation: into 0.5s ease-in-out;
+}
+
+@keyframes into {
+    0% {
+        opacity: 0;
+        top: 22%;
+    }
+    100% {
+        opacity: 1;
+        top: 25%;
+    }
+}
+
+.appmain .slogan {
+    font-size: 2rem;
+    margin-top: 50px;
+}
+
+.appstart .logo img {
+    width: 100px;
+}
+
+.appaddress {
+    position: fixed;
+    width: 100%;
+    bottom: 15px;
+    opacity: 10;
+    text-align: center;
+    animation: into2 0.5s ease-in-out;
+}
+
+@keyframes into2 {
+    0% {
+        opacity: 0;
+        bottom: 0px;
+    }
+    100% {
+        opacity: 1;
+        bottom: 15px;
+    }
+}
+
+.disable {
+    opacity: 0;
+    left: -100%;
+}
+
+.active {
+    display: block;
+}
+
+.disactive {
+    display: none;
+}
+
+.startmenu {
+    padding-top: 20px;
+}
+
+.into-btn {
+    width: 80%;
+    /* margin: 0 auto; */
+    /* padding-top: 20px; */
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s;
+}
+
+.into-btn .btn {
+    height: 60px;
+    border-radius: 30px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+    font-size: 1.2rem;
+    font-family: "微软雅黑";
+    font-weight: bold;
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.into-btn .btn:after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.into-btn .btn:active:after {
+    display: block;
+}
+
+@media (min-width:500px) {
+    .into-btn {
+        width: 50%;
+    }
+}
+
+@media (min-width:1000px) {
+    .into-btn {
+        width: 30%;
+    }
+}
+
+.b1 {
+    background-image: linear-gradient(217deg, #4C8CF0 0%, #88B7FF 100%);
+    box-shadow: 0px 2px 10px rgba(76, 140, 240, 0.3);
+    margin-bottom: 30px;
+}
+
+.b2 {
+    background-image: linear-gradient(219deg, #9F98FF 0%, #BEBBFE 100%);
+    box-shadow: 0px 2px 10px rgba(159, 152, 255, 0.3);
+    margin-bottom: 30px;
+}
+
+.b3 {
+    /* background-image: linear-gradient(217deg, #FFC750 0%, #FFDD93 100%); */
+    background-image: linear-gradient(218deg, #06C4FF 0%, #85dbf5 100%);
+    box-shadow: 0px 2px 10px rgba(6, 196, 255, 0.3);
+    margin-bottom: 0;
+}
+
+#q1 {
+    padding-top: 65px;
 }
