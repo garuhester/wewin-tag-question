@@ -265,7 +265,7 @@ window.onload = function () {
     tagsBox = document.querySelector(".tags");
     setTimeout(function () {
         $(".appstart").addClass("disable");
-    }, 0);
+    }, 1500);
 }
 
 function initClick() {
