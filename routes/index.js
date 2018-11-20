@@ -60,7 +60,7 @@ module.exports = function (app) {
     });
 
     app.post("/xls", function (req, res) {
-        var obj = xlsx.parse("./static/data.xlsx");
+        var obj = xlsx.parse("./static/xls/tag.xlsx");
         var sheet = obj[0].data;
         var data = [];
         var result, tag, img;
@@ -75,6 +75,53 @@ module.exports = function (app) {
                 json["result"] = result;
                 json["tag"] = tag;
                 json["img"] = img;
+                data.push(json);
+            }
+        }
+        res.json({ result: data });
+    });
+
+    //获取打印机介绍
+    app.post("/printerInfo", function (req, res) {
+        var obj = xlsx.parse("./static/xls/printer.xlsx");
+        var sheet = obj[0].data;
+        var data = [];
+        var result, tag, img;
+        for (var j = 0; j < sheet.length; j++) {
+            var json = {};
+            result = sheet[j][0];
+            tag = sheet[j][1];
+            img = sheet[j][2];
+            var isEmpty = result == "" || result == null || result == undefined || tag == "" || tag == null || tag == undefined;
+
+            if (!isEmpty) {
+                json["result"] = result;
+                json["tag"] = tag;
+                json["img"] = img;
+                data.push(json);
+            }
+        }
+        res.json({ result: data });
+    });
+
+    //获取材质介绍
+    app.post("/materialInfo", function (req, res) {
+        var obj = xlsx.parse("./static/xls/material.xlsx");
+        var sheet = obj[0].data;
+        var data = [];
+        var result, tag, img;
+        for (var j = 0; j < sheet.length; j++) {
+            var json = {};
+            result = sheet[j][0];
+            tag = sheet[j][1];
+            var isEmpty;
+            if (j != 10) {
+                isEmpty = result == "" || result == null || result == undefined || tag == "" || tag == null || tag == undefined;
+            }
+
+            if (!isEmpty) {
+                json["result"] = result;
+                json["tag"] = tag;
                 data.push(json);
             }
         }

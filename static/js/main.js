@@ -1,6 +1,6 @@
 var result = "", nowq = 1, maxq = 0, tagsBox, chooseStr = "", begin = "";
 var answerWords = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"];
-var resultData = [];
+var resultData = [], printerData = [], materialData = [];
 var connect = "->";
 var shake = true;
 
@@ -262,6 +262,8 @@ var allInfo = [
 window.onload = function () {
     initClick();
     getXLS();
+    getPrinterInfo();
+    getMaterialInfo();
     tagsBox = document.querySelector(".tags");
     setTimeout(function () {
         $(".appstart").addClass("disable");
@@ -278,16 +280,64 @@ function initClick() {
         $(".upimg .title").text("");
     });
 
+    //打印机介绍
+    $(".startmenu .b1").click(function () {
+        startApp("printer");
+        $(".printer-list .list").html("");
+        var html = "";
+        for (var i = 0; i < printerData.length; i++) {
+            var data = printerData[i];
+            html += `
+            <div class="name ${data.result}">
+                <div class="left">${data.result}</div>
+                <div class="right">
+                    <img src="/img/small-printer/${data.img}" alt="">
+                </div>
+            </div>
+            `;
+        }
+        $(".printer-list .list").html(html);
+        registPrinterListName();
+    });
+    //返回打印机介绍列表
+    $(".backprinterlist").click(function () {
+        backList("printer");
+    });
+
+    //材质介绍
+    $(".startmenu .b2").click(function () {
+        startApp("material");
+        $(".material-list .list").html("");
+        var html = "";
+        for (var i = 0; i < materialData.length; i++) {
+            var data = materialData[i];
+            if (i == materialData.length - 1) {
+                html += `
+                <div class="mtips">
+                    <b>提示：</b>
+                    <div class="left">${data.result}</div>
+                </div>
+                `;
+            } else {
+                html += `
+                <div class="name ${data.result}">
+                    <div class="left">${data.result}</div>
+                </div>
+                `;
+            }
+
+        }
+        $(".material-list .list").html(html);
+        registMaterialListName();
+    });
+    //返回材质介绍列表
+    $(".backmateriallist").click(function () {
+        backList("material");
+    });
+
     //标签选型
     $(".startmenu .b3").click(function () {
-        if (shake) {
-            shake = false;
-            setTimeout(function () {
-                $(".main").addClass("active");
-                $(".startmenu").addClass("disactive");
-                shake = true;
-            }, 200);
-        }
+        startApp("main");
     });
 
     //返回主菜单
@@ -296,8 +346,11 @@ function initClick() {
         if (shake) {
             shake = false;
             setTimeout(function () {
+                $(".printer").removeClass("active");
+                $(".material").removeClass("active");
                 $(".main").removeClass("active");
                 $(".startmenu").removeClass("disactive");
+                $(".printer-list .list").html("");
                 shake = true;
             }, 200);
         }
@@ -308,6 +361,129 @@ function initClick() {
     //     $(".upimg").addClass("active");
     //     $(".upimg img").attr("src", src);
     // });
+}
+
+function backList(className) {
+    if (shake) {
+        shake = false;
+        setTimeout(function () {
+            $("." + className + "-info .pinfo").html("");
+            $("." + className + "-list").addClass("active");
+            $("." + className + "-list").removeClass("disactive");
+            $("." + className + "-info").addClass("disactive");
+            $("." + className + "-info").removeClass("active");
+            backTop();
+            shake = true;
+        }, 200);
+    }
+}
+
+function registMaterialListName() {
+    $(".material-list .list .name").click(function () {
+        var _this = this;
+        if (shake) {
+            shake = false;
+            setTimeout(function () {
+                var materialName = $(_this).attr("class").replace("name ", "");
+                $(".material-list").removeClass("active");
+                $(".material-list").addClass("disactive");
+                $(".material-info").removeClass("disactive");
+                $(".material-info").addClass("active");
+                var html = "", tags = [];
+                for (var i = 0; i < materialData.length; i++) {
+                    var data = materialData[i];
+                    if (data.result == materialName) {
+                        tags = data.tag.split("\n");
+                        html += `
+                            <div class="title">${materialName}</div>
+                            <div class="info">
+                        `;
+                        for (var j = 0; j < tags.length; j++) {
+                            var arr = tags[j].split("：");
+                            if (arr.length == 1) {
+                                html += `
+                                    <div class="line">${arr[0]}</div>
+                                `;
+                            } else {
+                                html += `
+                                    <div class="line"><b>${arr[0]}</b>：${arr[1]}</div>
+                                `;
+                            }
+                        }
+                        html += `
+                            </div>
+                        `;
+                    }
+                }
+                $(".material-info .pinfo").html(html);
+                backTop();
+                shake = true;
+            }, 200);
+        }
+    });
+}
+
+function registPrinterListName() {
+    $(".printer-list .list .name").click(function () {
+        var _this = this;
+        if (shake) {
+            shake = false;
+            setTimeout(function () {
+                var printerName = $(_this).attr("class").replace("name ", "");
+                $(".printer-list").removeClass("active");
+                $(".printer-list").addClass("disactive");
+                $(".printer-info").removeClass("disactive");
+                $(".printer-info").addClass("active");
+                var html = "", tags = [];
+                for (var i = 0; i < printerData.length; i++) {
+                    var data = printerData[i];
+                    if (data.result == printerName) {
+                        tags = data.tag.split("\n");
+                        html += `
+                            <div class="title">${printerName}</div>
+                            <div class="nav">
+                                <img src="/img/printer/${data.img}" alt="">
+                            </div>
+                            <div class="info">
+                        `;
+                        for (var j = 0; j < tags.length; j++) {
+                            var arr = tags[j].split("：");
+                            if (arr.length == 1) {
+                                html += `
+                                    <div class="line">${arr[0]}</div>
+                                `;
+                            } else {
+                                html += `
+                                    <div class="line"><b>${arr[0]}</b>：${arr[1]}</div>
+                                `;
+                            }
+                        }
+                        html += `
+                            </div>
+                        `;
+                    }
+                }
+                $(".printer-info .pinfo").html(html);
+                backTop();
+                shake = true;
+            }, 200);
+        }
+    });
+}
+
+function backTop() {
+    $('html,body').animate({ scrollTop: '0px' }, 100);
+}
+
+function startApp(appName) {
+    if (shake) {
+        shake = false;
+        setTimeout(function () {
+            $("." + appName).addClass("active");
+            $(".startmenu").addClass("disactive");
+            shake = true;
+        }, 200);
+    }
 }
 
 function registAnswerClick() {
@@ -414,7 +590,7 @@ function registAnswerClick() {
             setTimeout(function () {
                 initClick();
                 backLast();
-                $('html,body').animate({ scrollTop: '0px' }, 100);
+                backTop();
                 $(_this).parent().parent().removeClass("active");
                 if (nowq == maxq + 1 || isOver) {
                     gotoResult();
@@ -444,7 +620,7 @@ function restart() {
             }
             $(".result").removeClass("active");
             $("#q1").addClass("active");
-            $('html,body').animate({ scrollTop: '0px' }, 100);
+            backTop();
             console.clear();
             shake = true;
             // window.location.reload();
@@ -452,6 +628,7 @@ function restart() {
     }
 }
 
+//获取标签选型
 function getXLS() {
     $.ajax({
         method: 'post',
@@ -459,6 +636,30 @@ function getXLS() {
         success: function (data) {
             // console.table(data.result);
             resultData = data.result;
+        }
+    });
+}
+
+//获取打印机介绍
+function getPrinterInfo() {
+    $.ajax({
+        method: 'post',
+        url: '/printerInfo',
+        success: function (data) {
+            // console.table(data.result);
+            printerData = data.result;
+        }
+    });
+}
+
+//获取材质介绍
+function getMaterialInfo() {
+    $.ajax({
+        method: 'post',
+        url: '/materialInfo',
+        success: function (data) {
+            // console.table(data.result);
+            materialData = data.result;
         }
     });
 }
