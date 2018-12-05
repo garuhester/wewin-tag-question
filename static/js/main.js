@@ -345,14 +345,14 @@ function initClick() {
         var _this = this;
         if (shake) {
             shake = false;
-            setTimeout(function () {
-                $(".printer").removeClass("active");
-                $(".material").removeClass("active");
-                $(".main").removeClass("active");
-                $(".startmenu").removeClass("disactive");
-                $(".printer-list .list").html("");
-                shake = true;
-            }, 200);
+            // setTimeout(function () {
+            $(".printer").removeClass("active");
+            $(".material").removeClass("active");
+            $(".main").removeClass("active");
+            $(".startmenu").removeClass("disactive");
+            $(".printer-list .list").html("");
+            shake = true;
+            // }, 200);
         }
     });
 
@@ -366,15 +366,15 @@ function initClick() {
 function backList(className) {
     if (shake) {
         shake = false;
-        setTimeout(function () {
-            $("." + className + "-info .pinfo").html("");
-            $("." + className + "-list").addClass("active");
-            $("." + className + "-list").removeClass("disactive");
-            $("." + className + "-info").addClass("disactive");
-            $("." + className + "-info").removeClass("active");
-            backTop();
-            shake = true;
-        }, 200);
+        // setTimeout(function () {
+        $("." + className + "-info .pinfo").html("");
+        $("." + className + "-list").addClass("active");
+        $("." + className + "-list").removeClass("disactive");
+        $("." + className + "-info").addClass("disactive");
+        $("." + className + "-info").removeClass("active");
+        backTop();
+        shake = true;
+        // }, 200);
     }
 }
 
@@ -609,22 +609,22 @@ function registAnswerClick() {
 function restart() {
     if (shake) {
         shake = false;
-        setTimeout(function () {
-            result = "";
-            chooseStr = "";
-            begin = "";
-            nowq = 1;
-            tagsBox.innerHTML = "";
-            for (var i = 2; i < 10; i++) {
-                $("#q" + i).remove();
-            }
-            $(".result").removeClass("active");
-            $("#q1").addClass("active");
-            backTop();
-            console.clear();
-            shake = true;
-            // window.location.reload();
-        }, 200);
+        // setTimeout(function () {
+        result = "";
+        chooseStr = "";
+        begin = "";
+        nowq = 1;
+        tagsBox.innerHTML = "";
+        for (var i = 2; i < 10; i++) {
+            $("#q" + i).remove();
+        }
+        $(".result").removeClass("active");
+        $("#q1").addClass("active");
+        backTop();
+        console.clear();
+        shake = true;
+        // window.location.reload();
+        // }, 200);
     }
 }
 
@@ -761,19 +761,19 @@ function backLast() {
         var _this = this;
         if (shake) {
             shake = false;
-            setTimeout(function () {
-                nowq--;
-                if ($(_this).parent().attr("class").indexOf("result") == -1) {
-                    $(_this).parent().remove();
-                } else {
-                    $(_this).parent().removeClass("active");
-                    tagsBox.innerHTML = "";
-                }
-                $("#q" + nowq).addClass("active");
-                result = popResult(result);
-                chooseStr = popChooseStr(chooseStr);
-                shake = true;
-            }, 200);
+            // setTimeout(function () {
+            nowq--;
+            if ($(_this).parent().attr("class").indexOf("result") == -1) {
+                $(_this).parent().remove();
+            } else {
+                $(_this).parent().removeClass("active");
+                tagsBox.innerHTML = "";
+            }
+            $("#q" + nowq).addClass("active");
+            result = popResult(result);
+            chooseStr = popChooseStr(chooseStr);
+            shake = true;
+            // }, 200);
         }
     });
 }
