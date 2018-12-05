@@ -120,7 +120,7 @@ module.exports = function (app) {
             tag = sheet[j][1];
             var isEmpty;
             if (j != 10) {
-                isEmpty = result == "" || result == null || result == undefined || tag == "" || tag == null || tag == undefined;
+                isEmpty = result == "" || result == null || result == undefined;
             }
 
             if (!isEmpty) {
