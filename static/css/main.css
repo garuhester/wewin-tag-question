@@ -545,6 +545,7 @@ html {
 .printer .info,
 .material .info {
     margin-top: 20px;
+    margin-bottom: 20px;
     box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     background: #fff;
@@ -644,6 +645,7 @@ html {
     text-align: center;
     font-size: 0.9rem;
     border-radius: 15px;
+    margin-bottom: 20px;
 }
 
 .material-list .list .name .left {
@@ -654,6 +656,16 @@ html {
     color: rgb(43, 43, 43);
     text-decoration: none;
     border-bottom: 1px solid rgb(43, 43, 43);
+}
+
+.childtips {
+    background: #fff;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.childtips div {
+    margin-bottom: 0;
 }
 
 .active {
