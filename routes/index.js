@@ -11,30 +11,34 @@ module.exports = function (app) {
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
     };
 
-    app.get("/index/:uuid", function (req, res) {
-        var u = req.params.uuid;
-        Qrcode.findOne({}, function (err, qr) {
-            if (qr != null) {
-                if (u == qr.result) {
-                    res.render("index");
-                } else if (u == "wewin-admin-accept") {
-                    res.render("index");
-                } else {
-                    res.render("nolook");
-                }
-            } else {
-                if (u == "wewin-admin-accept") {
-                    res.render("index");
-                } else {
-                    res.render("nolook");
-                }
-            }
-        });
+    app.get("/", function (req, res) {
+        res.render("index");
     });
 
-    app.get("/genqrcode", function (req, res) {
-        res.render("genqrcode");
-    });
+    // app.get("/index/:uuid", function (req, res) {
+    //     var u = req.params.uuid;
+    //     Qrcode.findOne({}, function (err, qr) {
+    //         if (qr != null) {
+    //             if (u == qr.result) {
+    //                 res.render("index");
+    //             } else if (u == "wewin-admin-accept") {
+    //                 res.render("index");
+    //             } else {
+    //                 res.render("nolook");
+    //             }
+    //         } else {
+    //             if (u == "wewin-admin-accept") {
+    //                 res.render("index");
+    //             } else {
+    //                 res.render("nolook");
+    //             }
+    //         }
+    //     });
+    // });
+
+    // app.get("/genqrcode", function (req, res) {
+    //     res.render("genqrcode");
+    // });
 
     app.get("/admin", function (req, res) {
         var currentPage = req.query.page || 1;
@@ -132,58 +136,58 @@ module.exports = function (app) {
 
     app.post("/getUserList", user.getUserList);
 
-    app.post("/getNumber", function (req, res) {
-        res.json({ result: number });
-    });
+    // app.post("/getNumber", function (req, res) {
+    //     res.json({ result: number });
+    // });
 
-    app.post("/genQrcode", function (req, res) {
-        uuid = generateUUID();
-        Qrcode.findOne({}, function (err, qr) {
-            if (qr == null) {
-                var qrcode = new Qrcode({
-                    result: uuid
-                });
-                qrcode.save(function () {
-                    timeToDelete();
-                    res.json({ result: uuid });
-                });
-            } else {
-                if (qr.result == "wewin-admin-accept") {
-                    Qrcode.findOneAndUpdate({}, { 'result': uuid }, function (err, user) {
-                        timeToDelete();
-                        res.json({ result: uuid });
-                    });
-                } else {
-                    res.json({ result: qr.result });
-                }
-            }
-        });
-    });
+    // app.post("/genQrcode", function (req, res) {
+    //     uuid = generateUUID();
+    //     Qrcode.findOne({}, function (err, qr) {
+    //         if (qr == null) {
+    //             var qrcode = new Qrcode({
+    //                 result: uuid
+    //             });
+    //             qrcode.save(function () {
+    //                 timeToDelete();
+    //                 res.json({ result: uuid });
+    //             });
+    //         } else {
+    //             if (qr.result == "wewin-admin-accept") {
+    //                 Qrcode.findOneAndUpdate({}, { 'result': uuid }, function (err, user) {
+    //                     timeToDelete();
+    //                     res.json({ result: uuid });
+    //                 });
+    //             } else {
+    //                 res.json({ result: qr.result });
+    //             }
+    //         }
+    //     });
+    // });
 }
 
-function timeToDelete(time) {
-    var inter = setInterval(function () {
-        number--;
-        if (number == 0) {
-            uuid = "wewin-admin-accept";
-            Qrcode.findOneAndUpdate({}, { 'result': uuid }, function (err, user) { });
-            number = 180;
-            clearInterval(inter);
-        }
-    }, 1000);
-    // setTimeout(function () {
-    //     uuid = "wewin-admin-accept";
-    //     Qrcode.findOneAndUpdate({}, { 'result': uuid }, function (err, user) { });
-    // }, time);
-}
+// function timeToDelete(time) {
+//     var inter = setInterval(function () {
+//         number--;
+//         if (number == 0) {
+//             uuid = "wewin-admin-accept";
+//             Qrcode.findOneAndUpdate({}, { 'result': uuid }, function (err, user) { });
+//             number = 180;
+//             clearInterval(inter);
+//         }
+//     }, 1000);
+//     // setTimeout(function () {
+//     //     uuid = "wewin-admin-accept";
+//     //     Qrcode.findOneAndUpdate({}, { 'result': uuid }, function (err, user) { });
+//     // }, time);
+// }
 
 //生成uuid
-function generateUUID() {
-    var d = new Date().getTime();
-    var uuid = 'xxxxxxxx-yxxx-xxxxx'.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return uuid;
-}
+// function generateUUID() {
+//     var d = new Date().getTime();
+//     var uuid = 'xxxxxxxx-yxxx-xxxxx'.replace(/[xy]/g, function (c) {
+//         var r = (d + Math.random() * 16) % 16 | 0;
+//         d = Math.floor(d / 16);
+//         return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+//     });
+//     return uuid;
+// }
