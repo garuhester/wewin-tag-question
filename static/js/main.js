@@ -708,6 +708,9 @@ function gotoResult() {
 function addResult(allDatas, tags) {
     for (var i = 0; i < allDatas.length; i++) {
         if (allDatas[0].length != 1) {
+            if (allDatas[i][0].indexOf('023-63075555') != -1) {
+                allDatas[i][0] = allDatas[i][0].replace('023-63075555', '<a id="wewinphone" href="tel:023-63075555" style="margin-left:5px;">023-63075555</a>');
+            }
             if (allDatas[i][1].trim() == "no") {
                 tagsBox.innerHTML += `<div class='tag'><div class='txt noimg'>${allDatas[i][0]}</div></div>`;
             } else {

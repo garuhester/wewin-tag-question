@@ -256,6 +256,22 @@ html {
     background: #fff697;
 }
 
+.printer .backstartmenu,
+.printer .backprinterlist {
+    background: rgb(254, 187, 69);
+}
+
+.material .backstartmenu,
+.material .backmateriallist {
+    background: rgb(114, 221, 237);
+}
+
+.main .backstartmenu,
+.main .restart,
+.main .backlast {
+    background: rgb(254, 187, 69);
+}
+
 .noselect {
     -moz-user-select: none;
     /*火狐*/
@@ -635,7 +651,9 @@ html {
 }
 
 #wewinphone {
-    color: rgb(56, 56, 56);
+    color: rgb(43, 43, 43);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(43, 43, 43);
 }
 
 .active {
