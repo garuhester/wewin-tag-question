@@ -25,10 +25,12 @@ var getAdminData = function (currentPage, query) {
             if (query.beginDate == "" && nextDate == "") {
                 searchStr = {
                     'result': { '$regex': query.result },
+                    'region': { '$regex': query.region }
                 }
             } else if (query.beginDate != "" && nextDate == "") {
                 searchStr = {
                     'result': { '$regex': query.result },
+                    'region': { '$regex': query.region },
                     "createTime": {
                         "$gt": query.beginDate
                     }
@@ -36,6 +38,7 @@ var getAdminData = function (currentPage, query) {
             } else if (query.beginDate == "" && nextDate != "") {
                 searchStr = {
                     'result': { '$regex': query.result },
+                    'region': { '$regex': query.region },
                     "createTime": {
                         "$lt": nextDate
                     }
@@ -43,6 +46,7 @@ var getAdminData = function (currentPage, query) {
             } else if (query.beginDate != "" && nextDate != "") {
                 searchStr = {
                     'result': { '$regex': query.result },
+                    'region': { '$regex': query.region },
                     "$and": [{
                         "createTime": {
                             "$gte": query.beginDate
@@ -54,8 +58,8 @@ var getAdminData = function (currentPage, query) {
                     }]
                 }
             }
-
         }
+
         User.find(searchStr).skip(skipNum).limit(pageSize).sort({ 'createTime': -1 }).exec(function (err, user) {
             data.user = user;
             User.count(searchStr, function (err, q) {
@@ -69,14 +73,22 @@ var getAdminData = function (currentPage, query) {
     });
 }
 
+var initUserRegion = function (req, res) {
+    User.update({}, { '$set': { 'region': "" } }, { multi: true }, function (err, result) {
+        res.json({ result: 1 });
+    });
+}
+
 var submitResult = function (req, res) {
     var result = req.body.result;
     var answer = req.body.answer;
     var tag = req.body.tag;
+    var region = req.body.region;
     var user = new User({
         result,
         answer,
         tag,
+        region,
     });
     user.save(function (err, u) {
         res.json({ result: 1 });
@@ -102,4 +114,5 @@ module.exports = {
     submitResult,
     getAdminData,
     getUserList,
+    initUserRegion,
 }

@@ -44,11 +44,12 @@ module.exports = function (app) {
         var currentPage = req.query.page || 1;
         var query = {
             result: req.query.result || "",
+            region: req.query.region || "",
             beginDate: req.query.begindate || "",
             endDate: req.query.enddate || "",
         }
         if (req.query.result != undefined) {
-            query.gotoUrl = `/admin/?result=${query.result}&begindate=${query.beginDate}&enddate=${query.endDate}&page=`;
+            query.gotoUrl = `/admin/?result=${query.result}&region=${query.region}&begindate=${query.beginDate}&enddate=${query.endDate}&page=`;
         } else {
             query.gotoUrl = "/admin/?page=";
         }
@@ -135,6 +136,8 @@ module.exports = function (app) {
     app.post("/statistic", user.submitResult);
 
     app.post("/getUserList", user.getUserList);
+
+    app.post("/initUserRegion", user.initUserRegion);
 
     // app.post("/getNumber", function (req, res) {
     //     res.json({ result: number });

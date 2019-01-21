@@ -73,6 +73,10 @@
                                         <button class="mdui-btn mdui-color-blue-a200 mdui-ripple mdui-center" mdui-dialog="{target: '#search-dialog'}">
                                             查询</button>
                                     </a>
+                                    <!-- <a class="phonea">
+                                        <button class="mdui-btn mdui-color-blue-a200 mdui-ripple mdui-center" onclick="initUserRegion()">
+                                            初始化Region</button>
+                                    </a> -->
                                     <div class="mdui-toolbar-spacer"></div>
                                     <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '统计图'}" onclick="lookCharts()">
                                         <i class="mdui-icon material-icons">&#xe01d;</i>
@@ -111,7 +115,7 @@
                         <th>#</th>
                         <th>选择结果</th>
                         <th mdui-tooltip="{content: '从上往下依次选择'}">对应答案</th>
-                        <!-- <th>标签结果</th> -->
+                        <th>归属地</th>
                         <th>选择时间</th>
                     </tr>
                 </thead>
@@ -132,9 +136,9 @@
                             <td>
                                 <%- user.answer %>
                             </td>
-                            <!-- <td>
-                            <%- user.tag %>
-                        </td> -->
+                            <td>
+                                <%- user.region %>
+                            </td>
                             <td>
                                 <%= dateFormat(user.createTime) %>
                             </td>
@@ -172,6 +176,12 @@
                             <input id="result" class="mdui-textfield-input" type="text" value="<%= data.query.result %>" />
                         </div>
                     </div>
+                    <div class="mdui-col-xs-12">
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">归属地</label>
+                            <input id="region" class="mdui-textfield-input" type="text" value="<%= data.query.region %>" />
+                        </div>
+                    </div>
                 </div>
                 <div class="mdui-row mdui-m-t-2" style="height: 60px;">
                     <div class="mdui-col-xs-6" style="height: 60px;">
@@ -198,6 +208,19 @@
 
     <script>
 
+        function initUserRegion() {
+            var res = confirm("是否初始化Region");
+            if (res) {
+                $.ajax({
+                    method: 'post',
+                    url: '/initUserRegion',
+                    success: function (data) {
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+
         function lookCharts() {
             window.open('/charts');
         }
@@ -210,9 +233,10 @@
 
         function searchDevice() {
             var result = $("#result").val();
+            var region = $("#region").val();
             var beginDate = $("#beginDate").val();
             var endDate = $("#endDate").val();
-            urlopen(`/admin/?result=${result}&begindate=${beginDate}&enddate=${endDate}`);
+            urlopen(`/admin/?result=${result}&region=${region}&begindate=${beginDate}&enddate=${endDate}`);
         }
 
         function exportExcel(page, type, fn, dl) {

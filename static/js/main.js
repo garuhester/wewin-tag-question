@@ -381,6 +381,8 @@ function backList(className) {
 function registMaterialListName() {
     $(".material-list .list .name").click(function () {
         var _this = this;
+        var printerName = _this.className.replace("name ", "");
+        getPoint("材质介绍" + " -> " + printerName);
         if (shake) {
             shake = false;
             setTimeout(function () {
@@ -426,6 +428,8 @@ function registMaterialListName() {
 function registPrinterListName() {
     $(".printer-list .list .name").click(function () {
         var _this = this;
+        var printerName = _this.className.replace("name ", "");
+        getPoint("打印机介绍" + " -> " + printerName);
         if (shake) {
             shake = false;
             setTimeout(function () {
@@ -738,16 +742,38 @@ function nofind(obj) {
     $(obj).remove();
 }
 
-function statistic(tags) {
-    var tags = tags.join("\r\n<<br/>");
-    var answer = chooseStr.replace(/->/g, "\r\n<br/>");
+function getPoint(name) {
+    var result = name;
+    var answer = "";
+    var tags = "";
+    var region = returnCitySN['cip'] + "<br/>" + returnCitySN['cname'];
     $.ajax({
         method: 'post',
         url: '/statistic',
         data: {
             result: result,
             answer: answer,
-            tag: tags
+            tag: tags,
+            region: region
+        },
+        success: function (data) {
+            console.log("统计完成");
+        }
+    });
+}
+
+function statistic(tags) {
+    var tags = tags.join("\r\n<<br/>");
+    var answer = chooseStr.replace(/->/g, "\r\n<br/>");
+    var region = returnCitySN['cip'] + "<br/>" + returnCitySN['cname'];
+    $.ajax({
+        method: 'post',
+        url: '/statistic',
+        data: {
+            result: result,
+            answer: answer,
+            tag: tags,
+            region: region
         },
         success: function (data) {
             console.log("统计完成");
