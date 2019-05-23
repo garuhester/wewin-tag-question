@@ -4,7 +4,7 @@ var moment = require("moment");
 var getAdminData = function (currentPage, query) {
     return new Promise(function (resolve, reject) {
         //一页最大条数
-        var pageSize = 100;
+        var pageSize = 500;
         var skipNum = (currentPage - 1) * pageSize;
         var data = {};
         //页面跳转字符
