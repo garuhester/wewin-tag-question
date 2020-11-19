@@ -1,0 +1,18 @@
+version: '2'
+services:
+    mongo_wewin_tag_question:
+        container_name: mongo_wewin_tag_question
+        image: mongo
+        volumes: 
+            - $PWD/mongo:/data/db
+        restart: always
+    wewin_tag_question:
+        container_name: wewin_tag_question
+        image: hub.wewin.com.cn:9500/wewin_tag_question:latest
+        restart: always
+        depends_on:
+            - mongo_wewin_tag_question
+        ports: 
+            - 9514:8037
+        environment: 
+            - MONGO_HOST=mongo_wewin_tag_question

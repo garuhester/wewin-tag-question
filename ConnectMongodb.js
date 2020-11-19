@@ -1,6 +1,8 @@
 function connect() {
     let mongoose = require('mongoose');
-    let DB_URL = "mongodb://localhost:27017/wewintagquestion";
+    let DB_HOST = process.env.MONGO_HOST || "localhost";
+    let DB_PORT = process.env.MONGO_PORT || 27017;
+    let DB_URL = "mongodb://" + DB_HOST + ":" + DB_PORT + "/wewin-tag-question";
     //connect mongodb
     mongoose.Promise = global.Promise;
     mongoose.connect(DB_URL);
